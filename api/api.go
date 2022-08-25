@@ -11,9 +11,8 @@ import (
 	"github.com/go-logr/logr"
 )
 
-type TokenParser interface {
-	Parse(ctx context.Context, tok string) (*WorkflowID, error)
-}
+// TokenParser validates a token and returns the identity of the Actions Workflow it was issued to.
+type TokenParser func(ctx context.Context, tok string) (*WorkflowID, error)
 
 type TokenIssuer interface {
 	IssueToken(context.Context, *TokenRequest) (string, error)
@@ -87,5 +86,5 @@ func (h *Handler) authenticateWorkflow(r *http.Request) (*WorkflowID, error) {
 		return nil, fmt.Errorf("invalid authorization header")
 	}
 	tok := auth[len("Bearer "):]
-	return h.parser.Parse(r.Context(), tok)
+	return h.parser(r.Context(), tok)
 }

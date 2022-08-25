@@ -30,7 +30,7 @@ func run(log logr.Logger) error {
 
 	srv := http.Server{
 		Addr:    ":8080",
-		Handler: api.NewHandler(log, parser, authz, issuer),
+		Handler: api.NewHandler(log, parser.Parse, authz, issuer),
 	}
 	log.Info("starting server", "addr", srv.Addr)
 	if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
