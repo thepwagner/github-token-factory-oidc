@@ -7,11 +7,13 @@ import (
 	"net/http"
 	"time"
 
+	coreoidc "github.com/coreos/go-oidc/v3/oidc"
 	"github.com/go-logr/logr"
 	"github.com/thepwagner/github-token-action-server/api"
 	"github.com/thepwagner/github-token-action-server/github"
 	"github.com/thepwagner/github-token-action-server/oidc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
@@ -35,18 +37,28 @@ func Run(ctx context.Context, log logr.Logger) error {
 		}
 		log.V(2).Info("tracer shutdown complete")
 	}()
+	tracer := tp.Tracer("")
 
-	parser, err := oidc.NewParser(ctx, cfg.Issuers...)
+	ctx, span := tracer.Start(ctx, "StartServer")
+	tracedClient := &http.Client{
+		Transport: otelhttp.NewTransport(http.DefaultTransport, otelhttp.WithTracerProvider(tp)),
+	}
+	parser, err := oidc.NewParser(coreoidc.ClientContext(ctx, tracedClient), cfg.Issuers...)
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
+		span.End()
 		return fmt.Errorf("failed to create OIDC parser: %w", err)
 	}
+	parser = oidc.NewTracedTokenParser(tp, parser)
 
 	authz := api.TokenCheckYOLO
 
 	issuer := github.NewIssuer(log, tp, cfg.GitHub)
 
-	handler := api.NewHandler(log, tp.Tracer(""), parser, authz, issuer.IssueToken)
+	handler := api.NewHandler(log, tracer, parser, authz, issuer.IssueToken)
 	traced := otelhttp.NewHandler(handler, "ServeHTTP", otelhttp.WithTracerProvider(tp))
+	span.End()
 	return runServer(ctx, log, cfg.Addr, traced)
 }
 
@@ -54,7 +66,7 @@ func newTracerProvider(cfg *Config) (*sdktrace.TracerProvider, error) {
 	tpOptions := []sdktrace.TracerProviderOption{
 		sdktrace.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceNameKey.String("tft"),
+			semconv.ServiceNameKey.String("gtfo"),
 		)),
 	}
 	if cfg.JaegerEndpoint != "" {

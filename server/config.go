@@ -19,8 +19,7 @@ func NewConfig() (*Config, error) {
 	v.AutomaticEnv()
 
 	v.AddConfigPath(".")
-	// FIXME: hardcoded
-	v.SetConfigFile("testdata/config.yaml")
+	v.SetConfigName("gtfo")
 
 	if err := v.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("reading config: %w", err)

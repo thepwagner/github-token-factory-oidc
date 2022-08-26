@@ -1,0 +1,11 @@
+addr: :8080
+jaeger_endpoint: http://riker.pwagner.net:14268/api/traces
+
+issuers:
+  - https://token.actions.githubusercontent.com
+  - https://accounts.google.com
+
+github:
+  "*":
+    app_id: 89357
+    private_key_path: /Users/pwagner/Downloads/actions-secret-garden.2022-08-25.private-key.pem
