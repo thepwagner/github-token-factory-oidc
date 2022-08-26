@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/go-logr/logr"
-	"github.com/thepwagner/github-token-action-server/api"
-	"github.com/thepwagner/github-token-action-server/github"
+	"github.com/thepwagner/github-token-factory-oidc/api"
+	"github.com/thepwagner/github-token-factory-oidc/github"
 	"golang.org/x/sync/errgroup"
 )
 

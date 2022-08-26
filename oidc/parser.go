@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/coreos/go-oidc/v3/oidc"
-	"github.com/thepwagner/github-token-action-server/api"
+	"github.com/thepwagner/github-token-factory-oidc/api"
 )
 
 // TokenParser parses tokens from a known issuer

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/viper"
-	"github.com/thepwagner/github-token-action-server/github"
+	"github.com/thepwagner/github-token-factory-oidc/github"
 )
 
 type Config struct {

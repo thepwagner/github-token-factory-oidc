@@ -8,8 +8,8 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/thepwagner/github-token-action-server/api"
-	"github.com/thepwagner/github-token-action-server/github"
+	"github.com/thepwagner/github-token-factory-oidc/api"
+	"github.com/thepwagner/github-token-factory-oidc/github"
 	"go.opentelemetry.io/otel/trace"
 )
 

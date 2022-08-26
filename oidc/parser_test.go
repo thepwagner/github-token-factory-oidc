@@ -8,7 +8,7 @@ import (
 	coreoidc "github.com/coreos/go-oidc/v3/oidc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/thepwagner/github-token-action-server/oidc"
+	"github.com/thepwagner/github-token-factory-oidc/oidc"
 )
 
 const (

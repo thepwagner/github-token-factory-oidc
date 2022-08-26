@@ -9,7 +9,7 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zerologr"
 	"github.com/rs/zerolog"
-	"github.com/thepwagner/github-token-action-server/server"
+	"github.com/thepwagner/github-token-factory-oidc/server"
 )
 
 func main() {

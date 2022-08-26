@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/open-policy-agent/opa/rego"
-	"github.com/thepwagner/github-token-action-server/api"
+	"github.com/thepwagner/github-token-factory-oidc/api"
 )
 
 type Rego struct {

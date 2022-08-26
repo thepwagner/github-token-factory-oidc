@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/thepwagner/github-token-action-server/api"
+	"github.com/thepwagner/github-token-factory-oidc/api"
 )
 
 // NewParser returns an appropriate parser

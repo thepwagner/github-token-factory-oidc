@@ -7,8 +7,8 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/thepwagner/github-token-action-server/api"
-	"github.com/thepwagner/github-token-action-server/checker"
+	"github.com/thepwagner/github-token-factory-oidc/api"
+	"github.com/thepwagner/github-token-factory-oidc/checker"
 )
 
 func TestRego(t *testing.T) {

@@ -1,4 +1,4 @@
-module github.com/thepwagner/github-token-action-server
+module github.com/thepwagner/github-token-factory-oidc
 
 go 1.18
 

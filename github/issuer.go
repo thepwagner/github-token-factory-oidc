@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/google/go-github/v45/github"
-	"github.com/thepwagner/github-token-action-server/api"
+	"github.com/thepwagner/github-token-factory-oidc/api"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"

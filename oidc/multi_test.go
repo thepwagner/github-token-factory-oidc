@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/thepwagner/github-token-action-server/oidc"
+	"github.com/thepwagner/github-token-factory-oidc/oidc"
 )
 
 func TestMultiIssuerParser_Actions(t *testing.T) {
