@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+export PROJECT_ID="pwagner-net"
+export KO_DOCKER_REPO="gcr.io/${PROJECT_ID}/gtfo"
+ko build --sbom=none --bare .
+
+# gcloud iam service-accounts --project pwagner-net create gtfo-cloudrun
+# gcloud secrets create --project pwagner-net gtfo-app-secret --data-file=/Users/pwagner/Downloads/token-factory-oidc.2022-08-26.private-key.pem
+# gcloud secrets add-iam-policy-binding --project pwagner-net gtfo-app-secret --member="serviceAccount:gtfo-cloudrun@pwagner-net.iam.gserviceaccount.com" --role="roles/secretmanager.secretAccessor"
+# gcloud secrets create --project pwagner-net gtfo-app-config --data-file=gtfo.yaml
+# gcloud secrets add-iam-policy-binding --project pwagner-net gtfo-app-config --member="serviceAccount:gtfo-cloudrun@pwagner-net.iam.gserviceaccount.com" --role="roles/secretmanager.secretAccessor"
+
+# gcloud secrets versions add --project pwagner-net gtfo-app-config --data-file=gtfo.yaml
+
+gcloud run deploy gtfo \
+  --project "${PROJECT_ID}" \
+  --region us-central1 \
+  --service-account gtfo-cloudrun@pwagner-net.iam.gserviceaccount.com \
+  --image "${KO_DOCKER_REPO}:latest" \
+  --update-secrets=/home/nonroot/gtfo.yaml=gtfo-app-config:latest \
+  --update-secrets=/secrets/github-app.pem=gtfo-app-secret:latest

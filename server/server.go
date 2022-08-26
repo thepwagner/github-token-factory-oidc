@@ -10,6 +10,7 @@ import (
 	coreoidc "github.com/coreos/go-oidc/v3/oidc"
 	"github.com/go-logr/logr"
 	"github.com/thepwagner/github-token-action-server/api"
+	"github.com/thepwagner/github-token-action-server/checker"
 	"github.com/thepwagner/github-token-action-server/github"
 	"github.com/thepwagner/github-token-action-server/oidc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -43,6 +44,7 @@ func Run(ctx context.Context, log logr.Logger) error {
 	tracedClient := &http.Client{
 		Transport: otelhttp.NewTransport(http.DefaultTransport, otelhttp.WithTracerProvider(tp)),
 	}
+
 	parser, err := oidc.NewParser(coreoidc.ClientContext(ctx, tracedClient), cfg.Issuers...)
 	if err != nil {
 		span.RecordError(err)
@@ -52,9 +54,10 @@ func Run(ctx context.Context, log logr.Logger) error {
 	}
 	parser = oidc.NewTracedTokenParser(tp, parser)
 
-	authz := api.TokenCheckYOLO
+	ghClients := github.NewClients(tracedClient.Transport, cfg.GitHub)
+	authz := checker.NewRepoRego(log, ghClients)
 
-	issuer := github.NewIssuer(log, tp, cfg.GitHub)
+	issuer := github.NewIssuer(log, tracer, ghClients)
 
 	handler := api.NewHandler(log, tracer, parser, authz, issuer.IssueToken)
 	traced := otelhttp.NewHandler(handler, "ServeHTTP", otelhttp.WithTracerProvider(tp))

@@ -11,7 +11,7 @@ type Config struct {
 	Addr           string
 	JaegerEndpoint string `mapstructure:"jaeger_endpoint"`
 	Issuers        []string
-	GitHub         map[string]github.IssuerConfig
+	GitHub         map[string]github.Config
 }
 
 func NewConfig() (*Config, error) {

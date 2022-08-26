@@ -2,6 +2,7 @@
 
 This is a server that issues short-lived GitHub installation tokens in response to clients authenticated by OpenID Connect identity tokens:
 * GitHub Actions can authenticate to access multiple repositories, or organization-level resources.
+* Google Accounts can run GitHub scripts.
 * Tekton jobs can authenticate to GitHub from a kubernetes cluster.
 
 Should you store a Personal Access Token as a CI Secret? No, GTFO.

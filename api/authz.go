@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"fmt"
 	"strings"
 )
@@ -23,17 +24,24 @@ func (r TokenRequest) Valid() error {
 	return nil
 }
 
-func (r TokenRequest) Organization() string {
+func (r TokenRequest) Owner() string {
 	if len(r.Repositories) == 0 {
 		return ""
 	}
 	return strings.Split(r.Repositories[0], "/")[0]
 }
 
-// TokenCheck checks if a workflow is authorized to request a token
-type TokenCheck func(Claims, *TokenRequest) (bool, error)
+func (r TokenRequest) OwnerPermissions() bool {
+	for perm := range r.Permissions {
+		switch perm {
+		case "organization_projects":
+			return true
+		}
+	}
+	return false
+}
 
-func TokenCheckYOLO(c Claims, _ *TokenRequest) (bool, error) {
-	fmt.Printf("%+v\n", c)
-	return true, nil
+// TokenCheck checks if a client is authorized to request a token
+type TokenChecker interface {
+	Check(context.Context, Claims, *TokenRequest) (bool, error)
 }

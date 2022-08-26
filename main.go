@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	zl := zerolog.New(zerolog.NewConsoleWriter())
+	zl := zerolog.New(os.Stderr)
 	zl = zl.With().Timestamp().Logger()
 	var log logr.Logger = zerologr.New(&zl)
 

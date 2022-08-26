@@ -28,18 +28,18 @@ type Handler struct {
 	log    logr.Logger
 	tracer trace.Tracer
 
-	tokenParser TokenParser
-	tokenCheck  TokenCheck
-	tokenIssuer TokenIssuer
+	tokenParser  TokenParser
+	tokenChecker TokenChecker
+	tokenIssuer  TokenIssuer
 }
 
-func NewHandler(log logr.Logger, tracer trace.Tracer, tokenParser TokenParser, tokenCheck TokenCheck, tokenIssuer TokenIssuer) *Handler {
+func NewHandler(log logr.Logger, tracer trace.Tracer, tokenParser TokenParser, tokenChecker TokenChecker, tokenIssuer TokenIssuer) *Handler {
 	return &Handler{
-		log:         log.WithName("Handler"),
-		tracer:      tracer,
-		tokenParser: tokenParser,
-		tokenCheck:  tokenCheck,
-		tokenIssuer: tokenIssuer,
+		log:          log.WithName("Handler"),
+		tracer:       tracer,
+		tokenParser:  tokenParser,
+		tokenChecker: tokenChecker,
+		tokenIssuer:  tokenIssuer,
 	}
 }
 
@@ -81,7 +81,7 @@ func (h *Handler) tokenRequest(ctx context.Context, r *http.Request) (string, in
 		return "", http.StatusBadRequest, err
 	}
 
-	if authorized, err := h.tokenCheck(claims, &req); err != nil {
+	if authorized, err := h.tokenChecker.Check(ctx, claims, &req); err != nil {
 		return "", http.StatusInternalServerError, err
 	} else if !authorized {
 		return "", http.StatusForbidden, fmt.Errorf("not authorized")
