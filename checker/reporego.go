@@ -43,7 +43,7 @@ func (r RepoRego) Check(ctx context.Context, claims api.Claims, req *api.TokenRe
 			return true, nil
 		}
 	}
-	// FIXME: org-level permissions can only be granted by the owner
+
 	if req.OwnerPermissions() {
 		return false, nil
 	}

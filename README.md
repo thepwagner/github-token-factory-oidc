@@ -7,8 +7,7 @@ This is a server that issues short-lived GitHub installation tokens in response 
 
 Should you store a Personal Access Token as a CI Secret? No, GTFO.
 
-Best used with [TODO: link to the action](#)!
-
+Best used with [thepwagner/token-action](https://github.com/thepwagner/token-action)!
 
 ## Setup
 
@@ -36,7 +35,13 @@ Permissions must be granted to the target repository. Repositories can add a [Re
 ```rego
 default allow = false
 
-# TODO: rego example
+# Private Actions can do everything except write
+allow {
+	input.claims.iss == "https://token.actions.githubusercontent.com"
+	input.claims.repository_owner == "thepwagner"
+	input.claims.repository_visibility != "public"
+	input.permissions.contents != "write"
+}
 ```
 
 Repository owners may also host a policy for multiple repositories, by adding a `.github/tokens.rego` file to a repository called `.github`. (e.g. `https://github.com/thepwagner/.github`).
