@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-oidc/v3 v3.2.0
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/zerologr v1.2.2
-	github.com/google/go-github/v45 v45.2.0
+	github.com/google/go-github/v47 v47.0.0
 	github.com/open-policy-agent/opa v0.43.0
 	github.com/rs/zerolog v1.27.0
 	github.com/spf13/viper v1.12.0
