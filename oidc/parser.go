@@ -1,4 +1,4 @@
-package github
+package oidc
 
 import (
 	"context"
@@ -8,12 +8,15 @@ import (
 	"github.com/thepwagner/github-token-action-server/api"
 )
 
-type OIDCParser struct {
+// TokenParser parses tokens from a known issuer
+type TokenParser struct {
 	verifier *oidc.IDTokenVerifier
 }
 
-func NewOIDCParser(ctx context.Context, opts ...TokenParserOpt) (*OIDCParser, error) {
-	prov, err := oidc.NewProvider(ctx, "https://token.actions.githubusercontent.com")
+var _ api.TokenParser = (*TokenParser)(nil)
+
+func NewTokenParser(ctx context.Context, issuer string, opts ...TokenParserOpt) (*TokenParser, error) {
+	prov, err := oidc.NewProvider(ctx, issuer)
 	if err != nil {
 		return nil, fmt.Errorf("creating provider: %w", err)
 	}
@@ -24,19 +27,19 @@ func NewOIDCParser(ctx context.Context, opts ...TokenParserOpt) (*OIDCParser, er
 		opt(cfg)
 	}
 	verifier := prov.Verifier(cfg)
-	return &OIDCParser{verifier: verifier}, nil
+	return &TokenParser{verifier: verifier}, nil
 }
 
 type TokenParserOpt func(*oidc.Config)
 
-func (p *OIDCParser) Parse(ctx context.Context, tok string) (*api.WorkflowID, error) {
+func (p *TokenParser) Parse(ctx context.Context, tok string) (api.Claims, error) {
 	parsed, err := p.verifier.Verify(ctx, tok)
 	if err != nil {
 		return nil, fmt.Errorf("verifying token: %w", err)
 	}
-	var id api.WorkflowID
-	if err := parsed.Claims(&id); err != nil {
+	var claims api.Claims
+	if err := parsed.Claims(&claims); err != nil {
 		return nil, fmt.Errorf("parsing claims: %w", err)
 	}
-	return &id, nil
+	return claims, nil
 }
