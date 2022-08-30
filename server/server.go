@@ -55,7 +55,7 @@ func Run(ctx context.Context, log logr.Logger) error {
 	parser = oidc.NewTracedTokenParser(tp, parser)
 
 	ghClients := github.NewClients(tracedClient.Transport, cfg.GitHub)
-	authz := checker.NewRepoRego(log, ghClients)
+	authz := checker.NewRepoRego(log, ghClients, cfg.Checker.Rego.OwnerRepo, cfg.Checker.Rego.FromRepos)
 
 	issuer := github.NewIssuer(log, tracer, ghClients)
 

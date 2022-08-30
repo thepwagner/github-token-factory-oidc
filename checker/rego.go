@@ -10,17 +10,17 @@ import (
 	"github.com/thepwagner/github-token-factory-oidc/api"
 )
 
+// Rego is an api.TokenChecker that evaluates a Rego policy.
 type Rego struct {
 	log   logr.Logger
 	query rego.PreparedEvalQuery
 }
 
 func NewRego(ctx context.Context, log logr.Logger, policy string) (*Rego, error) {
-	r := rego.New(
+	query, err := rego.New(
 		rego.Query("data.tokens.allow"),
 		rego.Module("tokens.rego", policy),
-	)
-	query, err := r.PrepareForEval(ctx)
+	).PrepareForEval(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("preparing query: %w", err)
 	}

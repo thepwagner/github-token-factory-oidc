@@ -12,94 +12,137 @@ import (
 )
 
 type RepoRego struct {
-	log    logr.Logger
-	github *github.Clients
+	log       logr.Logger
+	github    *github.Clients
+	ownerRepo string
+	everyRepo bool
 }
 
-func NewRepoRego(log logr.Logger, github *github.Clients) *RepoRego {
+func NewRepoRego(log logr.Logger, github *github.Clients, ownerRepo string, everyRepo bool) *RepoRego {
 	return &RepoRego{
-		log:    log.WithName("auth.RepoRego"),
-		github: github,
+		log:       log.WithName("auth.RepoRego"),
+		github:    github,
+		ownerRepo: ownerRepo,
+		everyRepo: everyRepo,
 	}
 }
 
 var _ api.TokenChecker = (*RepoRego)(nil)
 
 func (r RepoRego) Check(ctx context.Context, claims api.Claims, req *api.TokenRequest) (bool, error) {
-	// Fetch all the relevant policies:
-	ownerCheck, repoChecks, err := r.fetchRepoPolicies(ctx, req)
-	if err != nil {
+	// The token may be approved by the global "owner" policy
+	if ownerOk, err := r.checkOwnerPolicy(ctx, claims, req); err != nil {
 		return false, err
+	} else if ownerOk {
+		return true, nil
 	}
 
-	// If a policy is set by the owner, it can approve:
-	if ownerCheck != nil {
-		ownerOk, err := ownerCheck.Check(ctx, claims, req)
-		if err != nil {
-			return false, fmt.Errorf("checking owner policy: %w", err)
-		}
-		r.log.Info("evaluated owner policy", "ok", ownerOk)
-		if ownerOk {
-			return true, nil
-		}
-	}
-
+	// For permissions that affect the owner (not individiual repos), don't listen to repositories
 	if req.OwnerPermissions() {
 		return false, nil
 	}
 
-	// Otherwise, every repository policy must approve:
-	if len(repoChecks) != len(req.Repositories) {
-		return false, fmt.Errorf("expected %d repo policies, got %d", len(req.Repositories), len(repoChecks))
+	return r.checkRepoPolicies(ctx, claims, req)
+}
+
+func (r RepoRego) checkOwnerPolicy(ctx context.Context, claims api.Claims, req *api.TokenRequest) (bool, error) {
+	if r.ownerRepo == "" {
+		// No owner policy is configured
+		return false, nil
 	}
-	for _, repoCheck := range repoChecks {
-		repoOk, err := repoCheck.Check(ctx, claims, req)
+
+	ownerRepo := r.resolveOwnerRepo(req)
+	rego, err := r.fetchRepoPolicies(ctx, ownerRepo)
+	if err != nil {
+		return false, fmt.Errorf("fetching owner policy: %w", err)
+	}
+	if len(rego) == 0 {
+		// No policy found in the configured repository
+		return false, nil
+	}
+
+	res, err := rego[0].Check(ctx, claims, req)
+	if err != nil {
+		return false, fmt.Errorf("checking owner policy: %w", err)
+	}
+	r.log.Info("evaluated owner policy", "ok", res, "owner_repo", ownerRepo)
+	return res, nil
+}
+
+func (r RepoRego) checkRepoPolicies(ctx context.Context, claims api.Claims, req *api.TokenRequest) (bool, error) {
+	if !r.everyRepo {
+		return false, nil
+	}
+
+	ownerRepo := r.resolveOwnerRepo(req)
+	toFetch := make([]string, 0, len(req.Repositories))
+	uniq := make(map[string]struct{}, len(req.Repositories))
+	for _, repo := range req.Repositories {
+		// We know the owner repo will fail, ABORT!
+		if repo == ownerRepo {
+			return false, nil
+		}
+		if _, ok := uniq[repo]; ok {
+			continue
+		}
+		uniq[repo] = struct{}{}
+		toFetch = append(toFetch, repo)
+	}
+
+	regos, err := r.fetchRepoPolicies(ctx, toFetch...)
+	if err != nil {
+		return false, fmt.Errorf("fetching repository policies: %w", err)
+	}
+	if len(regos) != len(toFetch) {
+		return false, fmt.Errorf("expected %d repo policies, got %d", len(toFetch), len(regos))
+	}
+	for _, rego := range regos {
+		res, err := rego.Check(ctx, claims, req)
 		if err != nil {
 			return false, fmt.Errorf("checking repository policy: %w", err)
 		}
-		r.log.Info("evaluated repo policy", "ok", repoOk)
-		if !repoOk {
+		r.log.Info("evaluated repo policy", "ok", res)
+		if !res {
+			// Must by accepted by every policy, so the first rejection is terminal:
 			return false, nil
 		}
 	}
 
+	// The request has been approved by all repository policies
 	return true, nil
 }
 
-func (r RepoRego) fetchRepoPolicies(ctx context.Context, req *api.TokenRequest) (*Rego, []*Rego, error) {
-	eg, ctx := errgroup.WithContext(ctx)
-	requested := make(map[string]struct{}, len(req.Repositories))
-	repoRegos := make(chan *Rego, 1)
-	for _, repo := range req.Repositories {
-		repo := repo
-		if _, ok := requested[repo]; ok {
-			continue
-		}
-		requested[repo] = struct{}{}
-
-		eg.Go(r.fetchRepoPolicy(ctx, repo, repoRegos))
+func (r RepoRego) resolveOwnerRepo(req *api.TokenRequest) string {
+	if strings.Contains(r.ownerRepo, "/") {
+		// Repository is owner/name
+		return r.ownerRepo
 	}
-	ownerRego := make(chan *Rego, 1)
-	ownerRepo := fmt.Sprintf("%s/.github", req.Owner())
-	if _, ok := requested[ownerRepo]; !ok {
-		eg.Go(r.fetchRepoPolicy(ctx, ownerRepo, ownerRego))
+
+	// Repository is just a name - combine with the owner of repositories in the request
+	return fmt.Sprintf("%s/%s", req.Owner(), r.ownerRepo)
+}
+
+func (r RepoRego) fetchRepoPolicies(ctx context.Context, repos ...string) ([]*Rego, error) {
+	eg, ctx := errgroup.WithContext(ctx)
+	regos := make(chan *Rego, 1)
+	for _, repo := range repos {
+		repo := repo
+		eg.Go(r.fetchRepoPolicy(ctx, repo, regos))
 	}
 	go func() {
 		_ = eg.Wait()
-		close(repoRegos)
-		close(ownerRego)
+		close(regos)
 	}()
 
 	// Collect results:
-	repoChecks := make([]*Rego, 0, len(requested))
-	for c := range repoRegos {
-		repoChecks = append(repoChecks, c)
+	res := make([]*Rego, 0, len(repos))
+	for c := range regos {
+		res = append(res, c)
 	}
-	ownerCheck := <-ownerRego
 	if err := eg.Wait(); err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	return ownerCheck, repoChecks, nil
+	return res, nil
 }
 
 func (r RepoRego) fetchRepoPolicy(ctx context.Context, repo string, res chan *Rego) func() error {
