@@ -20,9 +20,9 @@ type TokenParser interface {
 type TokenIssuer func(context.Context, *TokenRequest) (string, error)
 
 type TokenResponse struct {
-	Token        string `json:"token"`
-	BurnAfterUse bool   `json:"burn"`
-	Error        string `json:"error,omitempty"`
+	Token     string `json:"token"`
+	Revocable bool   `json:"revocable"`
+	Error     string `json:"error,omitempty"`
 }
 
 type Handler struct {
@@ -55,8 +55,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	tok, status, err := h.tokenRequest(ctx, r)
 	resp := TokenResponse{
-		Token:        tok,
-		BurnAfterUse: true,
+		Token:     tok,
+		Revocable: true,
 	}
 	if err != nil {
 		h.log.Error(err, "error issuing token")
