@@ -4,6 +4,10 @@ issuers:
   - https://token.actions.githubusercontent.com
   - https://accounts.google.com
 
+checker:
+  rego:
+    owner_repo: "thepwagner-org/.github"
+
 github:
   "*":
     app_id: 232257

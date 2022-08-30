@@ -22,7 +22,7 @@ type CheckerConfig struct {
 
 type RegoConfig struct {
 	// If non-empty, an authoritative `.github/tokens.rego` will be loaded from this named repository.
-	OwnerRepo string
+	OwnerRepo string `mapstructure:"owner_repo"`
 	// If set, `.github/tokens.rego` will be loaded from every repository in a request.
 	FromRepos bool
 }
@@ -33,7 +33,7 @@ func NewConfig() (*Config, error) {
 	v.AutomaticEnv()
 	v.AddConfigPath(".")
 	v.SetConfigName("gtfo")
-	v.SetDefault("checker.rego.ownerrepo", ".github")
+	v.SetDefault("checker.rego.owner_repo", ".github")
 
 	if err := v.ReadInConfig(); err != nil {
 		var nfe viper.ConfigFileNotFoundError
