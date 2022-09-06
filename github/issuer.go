@@ -113,7 +113,7 @@ func ConvertTokenRequest(req *api.TokenRequest) *github.InstallationTokenOptions
 		case "organization_administration":
 			perms.OrganizationAdministration = &v
 		case "organization_custom_roles":
-		// FIXME: missing from go-github?
+			perms.OrganizationCustomRoles = &v
 		case "organization_hooks":
 			perms.OrganizationHooks = &v
 		case "organization_plan":
@@ -121,8 +121,7 @@ func ConvertTokenRequest(req *api.TokenRequest) *github.InstallationTokenOptions
 		case "organization_projects":
 			perms.OrganizationProjects = &v
 		case "organization_packages":
-			// perms.OrganizationPackages = &v
-			// FIXME: missing from go-github
+			perms.OrganizationPackages = &v
 		case "organization_secrets":
 			perms.OrganizationSecrets = &v
 		case "organization_self_hosted_runners":
