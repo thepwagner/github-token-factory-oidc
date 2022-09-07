@@ -65,3 +65,5 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/google/go-github/v47 => github.com/thepwagner/go-github/v47 v47.0.0-20220906230106-663def32f342

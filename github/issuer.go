@@ -70,13 +70,66 @@ func ConvertTokenRequest(req *api.TokenRequest) *github.InstallationTokenOptions
 	var perms github.InstallationPermissions
 	for k, v := range req.Permissions {
 		switch k {
+		case "actions":
+			perms.Actions = &v
+		case "administration":
+			perms.Administration = &v
+		case "checks":
+			perms.Checks = &v
 		case "contents":
 			perms.Contents = &v
+		case "deployments":
+			perms.Deployments = &v
+		case "environments":
+			perms.Environments = &v
 		case "issues":
 			perms.Issues = &v
+		case "metadata":
+			perms.Metadata = &v
+		case "packages":
+			perms.Packages = &v
+		case "pages":
+			perms.Pages = &v
+		case "pull_requests":
+			perms.PullRequests = &v
+		case "repository_hooks":
+			perms.RepositoryHooks = &v
+		case "repository_projects":
+			perms.RepositoryProjects = &v
+		case "secret_scanning_alerts":
+			perms.SecretScanningAlerts = &v
+		case "secrets":
+			perms.Secrets = &v
+		case "security_events":
+			perms.SecurityEvents = &v
+		case "statuses":
+			perms.Statuses = &v
+		case "vulnerability_alerts":
+			perms.VulnerabilityAlerts = &v
+		case "workflows":
+			perms.Workflows = &v
+		case "members":
+			perms.Members = &v
+		case "organization_administration":
+			perms.OrganizationAdministration = &v
+		case "organization_custom_roles":
+			perms.OrganizationCustomRoles = &v
+		case "organization_hooks":
+			perms.OrganizationHooks = &v
+		case "organization_plan":
+			perms.OrganizationPlan = &v
 		case "organization_projects":
 			perms.OrganizationProjects = &v
-			// TODO: the rest of this. come on copilot i don't want to
+		case "organization_packages":
+			perms.OrganizationPackages = &v
+		case "organization_secrets":
+			perms.OrganizationSecrets = &v
+		case "organization_self_hosted_runners":
+			perms.OrganizationSelfHostedRunners = &v
+		case "organization_user_blocking":
+			perms.OrganizationUserBlocking = &v
+		case "team_discussions":
+			perms.TeamDiscussions = &v
 		}
 	}
 

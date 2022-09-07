@@ -33,8 +33,13 @@ func (r TokenRequest) Owner() string {
 
 func (r TokenRequest) OwnerPermissions() bool {
 	for perm := range r.Permissions {
+		// known owner permissions:
 		switch perm {
-		case "organization_projects":
+		case "members", "organization_administration", "organization_custom_roles", "organization_hooks", "organization_plan", "organization_projects", "organization_packages", "organization_secrets", "organization_self_hosted_runners", "organization_user_blocking", "team_discussions":
+			return true
+		}
+		// Potential future permissions:
+		if strings.HasPrefix(perm, "organization_") || strings.HasPrefix(perm, "team_") {
 			return true
 		}
 	}
