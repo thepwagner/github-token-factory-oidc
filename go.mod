@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.1.0
-	github.com/coreos/go-oidc/v3 v3.3.0
+	github.com/coreos/go-oidc/v3 v3.4.0
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/zerologr v1.2.2
 	github.com/google/go-github/v47 v47.0.0
