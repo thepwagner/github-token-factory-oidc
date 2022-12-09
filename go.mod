@@ -8,7 +8,7 @@ require (
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/zerologr v1.2.2
 	github.com/google/go-github/v48 v48.1.0
-	github.com/open-policy-agent/opa v0.47.1
+	github.com/open-policy-agent/opa v0.47.2
 	github.com/rs/zerolog v1.28.0
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
@@ -54,10 +54,10 @@ require (
 	github.com/yashtewari/glob-intersection v0.1.0 // indirect
 	go.opentelemetry.io/otel/metric v0.31.0 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
-	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b // indirect
+	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
-	golang.org/x/sys v0.0.0-20221010170243-090e33056c14 // indirect
-	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/sys v0.3.0 // indirect
+	golang.org/x/text v0.5.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
