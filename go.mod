@@ -7,7 +7,6 @@ require (
 	github.com/coreos/go-oidc/v3 v3.5.0
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/zerologr v1.2.3
-	github.com/google/go-github/v49 v49.1.0
 	github.com/google/go-github/v50 v50.0.0
 	github.com/open-policy-agent/opa v0.49.0
 	github.com/rs/zerolog v1.29.0
@@ -40,9 +39,7 @@ require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0 // indirect
 	github.com/spf13/afero v1.9.3 // indirect
