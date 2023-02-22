@@ -8,7 +8,7 @@ require (
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/zerologr v1.2.3
 	github.com/google/go-github/v50 v50.0.0
-	github.com/open-policy-agent/opa v0.49.0
+	github.com/open-policy-agent/opa v0.49.1
 	github.com/rs/zerolog v1.29.0
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.1
