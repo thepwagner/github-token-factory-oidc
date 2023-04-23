@@ -9,7 +9,7 @@ require (
 	github.com/go-logr/zerologr v1.2.3
 	github.com/google/go-github/v51 v51.0.0
 	github.com/open-policy-agent/opa v0.51.0
-	github.com/rs/zerolog v1.29.0
+	github.com/rs/zerolog v1.29.1
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.2
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.37.0
