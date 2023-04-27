@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	ghinstallation "github.com/bradleyfalzon/ghinstallation/v2"
-	"github.com/google/go-github/v51/github"
+	"github.com/google/go-github/v52/github"
 )
 
 type Config struct {
