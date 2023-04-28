@@ -3,7 +3,7 @@ module github.com/thepwagner/github-token-factory-oidc
 go 1.18
 
 require (
-	github.com/bradleyfalzon/ghinstallation/v2 v2.3.0
+	github.com/bradleyfalzon/ghinstallation/v2 v2.4.0
 	github.com/coreos/go-oidc/v3 v3.5.0
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/zerologr v1.2.3
@@ -34,7 +34,6 @@ require (
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/go-github/v50 v50.2.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
