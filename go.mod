@@ -7,7 +7,6 @@ require (
 	github.com/coreos/go-oidc/v3 v3.6.0
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/zerologr v1.2.3
-	github.com/google/go-github/v52 v52.0.0
 	github.com/google/go-github/v53 v53.1.0
 	github.com/open-policy-agent/opa v0.53.1
 	github.com/rs/zerolog v1.29.1
