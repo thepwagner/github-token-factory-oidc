@@ -3,7 +3,7 @@ module github.com/thepwagner/github-token-factory-oidc
 go 1.18
 
 require (
-	github.com/bradleyfalzon/ghinstallation/v2 v2.6.0
+	github.com/bradleyfalzon/ghinstallation/v2 v2.7.0
 	github.com/coreos/go-oidc/v3 v3.6.0
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/zerologr v1.2.3
