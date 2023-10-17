@@ -9,11 +9,10 @@ import (
 )
 
 type Config struct {
-	Addr           string
-	JaegerEndpoint string `mapstructure:"jaeger_endpoint"`
-	Issuers        []string
-	Checker        CheckerConfig
-	GitHub         map[string]github.Config
+	Addr    string
+	Issuers []string
+	Checker CheckerConfig
+	GitHub  map[string]github.Config
 }
 
 type CheckerConfig struct {

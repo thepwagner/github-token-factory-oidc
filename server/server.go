@@ -15,7 +15,6 @@ import (
 	"github.com/thepwagner/github-token-factory-oidc/oidc"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/exporters/jaeger"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.10.0"
@@ -72,14 +71,6 @@ func newTracerProvider(cfg *Config) (*sdktrace.TracerProvider, error) {
 			semconv.ServiceNameKey.String("gtfo"),
 		)),
 	}
-	if cfg.JaegerEndpoint != "" {
-		jaegerOut, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(cfg.JaegerEndpoint)))
-		if err != nil {
-			return nil, err
-		}
-		tpOptions = append(tpOptions, sdktrace.WithBatcher(jaegerOut))
-	}
-
 	return sdktrace.NewTracerProvider(tpOptions...), nil
 }
 
