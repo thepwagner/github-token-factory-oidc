@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.8.0
-	github.com/coreos/go-oidc/v3 v3.6.0
+	github.com/coreos/go-oidc/v3 v3.7.0
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/zerologr v1.2.3
 	github.com/google/go-github/v56 v56.0.0
@@ -67,13 +67,13 @@ require (
 	go.opentelemetry.io/otel/metric v1.19.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
-	golang.org/x/crypto v0.13.0 // indirect
+	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
-	golang.org/x/net v0.15.0 // indirect
-	golang.org/x/oauth2 v0.12.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
+	golang.org/x/oauth2 v0.13.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/appengine v1.6.7 // indirect
+	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
