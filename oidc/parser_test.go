@@ -19,6 +19,7 @@ const (
 )
 
 func TestTokenParser_Actions(t *testing.T) {
+	t.Skip("Actions key has expired - to run this you'll need to refresh the token+timestamp")
 	ctx := context.Background()
 	ghTokenWasValid, err := time.Parse(time.RFC3339, "2022-07-15T11:26:30Z")
 	require.NoError(t, err)
