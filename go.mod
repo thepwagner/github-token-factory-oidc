@@ -1,6 +1,6 @@
 module github.com/thepwagner/github-token-factory-oidc
 
-go 1.18
+go 1.21
 
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.8.0
