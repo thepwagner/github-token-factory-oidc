@@ -3,17 +3,10 @@ name: CI
 on:
   push:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - name: Set up Go
-        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
-        with:
-          go-version: 1.19
-      - run: go test -race ./...
+    uses: thepwagner-org/actions/.github/workflows/ci-golang.yaml@6986c6f842819b20013a705ee6a97a9d6143b289 # v2.5.0
+    permissions:
+      contents: read

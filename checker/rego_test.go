@@ -12,6 +12,7 @@ import (
 )
 
 func TestRego(t *testing.T) {
+	t.Parallel()
 	cases := map[string]struct {
 		policy        string
 		claims        api.Claims
@@ -81,7 +82,9 @@ func TestRego(t *testing.T) {
 
 	ctx := context.Background()
 	for label, tc := range cases {
+		tc := tc
 		t.Run(label, func(t *testing.T) {
+			t.Parallel()
 			r, err := checker.NewRego(ctx, logr.Discard(), tc.policy)
 			require.NoError(t, err)
 

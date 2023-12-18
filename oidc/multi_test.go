@@ -10,9 +10,11 @@ import (
 )
 
 func TestMultiIssuerParser_Actions(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 
 	t.Run("issuer found", func(t *testing.T) {
+		t.Parallel()
 		tp, err := oidc.NewMultiIssuerParser(ctx, issuerGitHub)
 		require.NoError(t, err)
 
@@ -21,6 +23,7 @@ func TestMultiIssuerParser_Actions(t *testing.T) {
 	})
 
 	t.Run("issuer not found", func(t *testing.T) {
+		t.Parallel()
 		tp, err := oidc.NewMultiIssuerParser(ctx, issuerGoogle)
 		require.NoError(t, err)
 		_, err = tp.Parse(ctx, ghToken)

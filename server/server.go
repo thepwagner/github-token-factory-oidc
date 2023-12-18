@@ -25,7 +25,7 @@ func Run(ctx context.Context, log logr.Logger) error {
 	if err != nil {
 		return fmt.Errorf("loading configuration: %w", err)
 	}
-	tp, err := newTracerProvider(cfg)
+	tp, err := newTracerProvider()
 	if err != nil {
 		return fmt.Errorf("building tracer: %w", err)
 	}
@@ -64,7 +64,7 @@ func Run(ctx context.Context, log logr.Logger) error {
 	return runServer(ctx, log, cfg.Addr, traced)
 }
 
-func newTracerProvider(cfg *Config) (*sdktrace.TracerProvider, error) {
+func newTracerProvider() (*sdktrace.TracerProvider, error) {
 	tpOptions := []sdktrace.TracerProviderOption{
 		sdktrace.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
