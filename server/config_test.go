@@ -9,6 +9,7 @@ import (
 )
 
 func TestNewConfig(t *testing.T) {
+	t.Parallel()
 	c, err := server.NewConfig()
 	require.NoError(t, err)
 	assert.Equal(t, ".github", c.Checker.Rego.OwnerRepo)

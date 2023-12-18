@@ -10,10 +10,11 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/thepwagner/github-token-factory-oidc/api"
 	"github.com/thepwagner/github-token-factory-oidc/github"
-	"go.opentelemetry.io/otel/trace"
+	"go.opentelemetry.io/otel/trace/noop"
 )
 
 func TestIssuer(t *testing.T) {
+	t.Parallel()
 	t.Skip("uses a private key and live GitHub")
 
 	configs := map[string]github.Config{
@@ -23,7 +24,7 @@ func TestIssuer(t *testing.T) {
 		},
 	}
 
-	iss := github.NewIssuer(logr.Discard(), trace.NewNoopTracerProvider().Tracer(""), github.NewClients(http.DefaultTransport, configs))
+	iss := github.NewIssuer(logr.Discard(), noop.NewTracerProvider().Tracer(""), github.NewClients(http.DefaultTransport, configs))
 
 	tok, err := iss.IssueToken(context.Background(), &api.TokenRequest{
 		Repositories: []string{"thepwagner-org/debian-bullseye"},
