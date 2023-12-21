@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
 	coreoidc "github.com/coreos/go-oidc/v3/oidc"
-	"github.com/go-logr/logr"
 	"github.com/thepwagner/github-token-factory-oidc/api"
 	"github.com/thepwagner/github-token-factory-oidc/checker"
 	"github.com/thepwagner/github-token-factory-oidc/github"
@@ -20,7 +20,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.10.0"
 )
 
-func Run(ctx context.Context, log logr.Logger) error {
+func Run(ctx context.Context, log *slog.Logger) error {
 	cfg, err := NewConfig()
 	if err != nil {
 		return fmt.Errorf("loading configuration: %w", err)
@@ -33,9 +33,9 @@ func Run(ctx context.Context, log logr.Logger) error {
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		if err := tp.Shutdown(shutdownCtx); err != nil {
-			log.Error(err, "failed to shutdown tracer")
+			log.Error("failed to shutdown tracer", slog.String("err", err.Error()))
 		}
-		log.V(2).Info("tracer shutdown complete")
+		log.Debug("tracer shutdown complete")
 	}()
 	tracer := tp.Tracer("")
 
@@ -74,7 +74,7 @@ func newTracerProvider() (*sdktrace.TracerProvider, error) {
 	return sdktrace.NewTracerProvider(tpOptions...), nil
 }
 
-func runServer(ctx context.Context, log logr.Logger, addr string, handler http.Handler) error {
+func runServer(ctx context.Context, log *slog.Logger, addr string, handler http.Handler) error {
 	srv := http.Server{
 		Addr:    addr,
 		Handler: handler,
@@ -94,7 +94,7 @@ func runServer(ctx context.Context, log logr.Logger, addr string, handler http.H
 		if err := srv.Shutdown(shutdownCtx); err != nil {
 			return fmt.Errorf("failed to shutdown server: %w", err)
 		}
-		log.V(1).Info("server shutdown complete")
+		log.Debug("server shutdown complete")
 	}
 
 	return nil

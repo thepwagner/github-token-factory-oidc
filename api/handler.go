@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"strings"
 
-	"github.com/go-logr/logr"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
@@ -26,7 +26,7 @@ type TokenResponse struct {
 }
 
 type Handler struct {
-	log    logr.Logger
+	log    *slog.Logger
 	tracer trace.Tracer
 
 	tokenParser  TokenParser
@@ -34,9 +34,9 @@ type Handler struct {
 	tokenIssuer  TokenIssuer
 }
 
-func NewHandler(log logr.Logger, tracer trace.Tracer, tokenParser TokenParser, tokenChecker TokenChecker, tokenIssuer TokenIssuer) *Handler {
+func NewHandler(log *slog.Logger, tracer trace.Tracer, tokenParser TokenParser, tokenChecker TokenChecker, tokenIssuer TokenIssuer) *Handler {
 	return &Handler{
-		log:          log.WithName("Handler"),
+		log:          log.With("logger", "Handler"),
 		tracer:       tracer,
 		tokenParser:  tokenParser,
 		tokenChecker: tokenChecker,
@@ -59,7 +59,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Revocable: true,
 	}
 	if err != nil {
-		h.log.Error(err, "error issuing token")
+		h.log.Error("error issuing token", slog.String("err", err.Error()))
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())
 		resp.Error = err.Error()
@@ -71,7 +71,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) tokenRequest(ctx context.Context, r *http.Request) (string, int, error) {
-	h.log.V(1).Info("received request", "url", r.URL.String())
+	h.log.Debug("received request", "url", r.URL.String())
 
 	claims, err := h.authenticate(ctx, r)
 	if err != nil {
@@ -90,7 +90,7 @@ func (h *Handler) tokenRequest(ctx context.Context, r *http.Request) (string, in
 	} else if !authorized {
 		return "", http.StatusForbidden, fmt.Errorf("not authorized")
 	}
-	h.log.V(1).Info("authorized token")
+	h.log.Debug("authorized token")
 
 	tok, err := h.tokenIssuer(ctx, &req)
 	if err != nil {

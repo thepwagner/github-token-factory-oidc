@@ -2,10 +2,10 @@ package github_test
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 	"testing"
 
-	"github.com/go-logr/logr"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/thepwagner/github-token-factory-oidc/api"
@@ -24,7 +24,7 @@ func TestIssuer(t *testing.T) {
 		},
 	}
 
-	iss := github.NewIssuer(logr.Discard(), noop.NewTracerProvider().Tracer(""), github.NewClients(http.DefaultTransport, configs))
+	iss := github.NewIssuer(slog.Default(), noop.NewTracerProvider().Tracer(""), github.NewClients(http.DefaultTransport, configs))
 
 	tok, err := iss.IssueToken(context.Background(), &api.TokenRequest{
 		Repositories: []string{"thepwagner-org/debian-bullseye"},

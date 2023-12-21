@@ -2,9 +2,9 @@ package checker_test
 
 import (
 	"context"
+	"log/slog"
 	"testing"
 
-	"github.com/go-logr/logr"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/thepwagner/github-token-factory-oidc/api"
@@ -85,7 +85,7 @@ func TestRego(t *testing.T) {
 		tc := tc
 		t.Run(label, func(t *testing.T) {
 			t.Parallel()
-			r, err := checker.NewRego(ctx, logr.Discard(), tc.policy)
+			r, err := checker.NewRego(ctx, slog.Default(), tc.policy)
 			require.NoError(t, err)
 
 			for _, allow := range tc.expectedAllow {
