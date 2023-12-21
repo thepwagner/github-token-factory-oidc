@@ -5,11 +5,9 @@ go 1.21
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.8.0
 	github.com/coreos/go-oidc/v3 v3.9.0
-	github.com/go-logr/logr v1.3.0
-	github.com/go-logr/zerologr v1.2.3
 	github.com/google/go-github/v57 v57.0.0
+	github.com/lmittmann/tint v1.0.3
 	github.com/open-policy-agent/opa v0.59.0
-	github.com/rs/zerolog v1.31.0
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.8.4
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.46.1
@@ -29,6 +27,7 @@ require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.1 // indirect
+	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
@@ -39,8 +38,6 @@ require (
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect

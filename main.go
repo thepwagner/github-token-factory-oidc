@@ -2,20 +2,23 @@ package main
 
 import (
 	"context"
+	"log/slog"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
-	"github.com/go-logr/logr"
-	"github.com/go-logr/zerologr"
-	"github.com/rs/zerolog"
+	"github.com/lmittmann/tint"
 	"github.com/thepwagner/github-token-factory-oidc/server"
 )
 
 func main() {
-	zl := zerolog.New(os.Stderr)
-	zl = zl.With().Timestamp().Logger()
-	var log logr.Logger = zerologr.New(&zl)
+	log := slog.New(
+		tint.NewHandler(os.Stderr, &tint.Options{
+			Level:      slog.LevelDebug,
+			TimeFormat: time.RFC3339,
+		}),
+	)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -23,12 +26,12 @@ func main() {
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		signal := <-sig
-		log.V(1).Info("received signal", "signal", signal)
+		log.Debug("received signal", "signal", signal)
 		cancel()
 	}()
 
 	if err := server.Run(ctx, log); err != nil {
-		log.Error(err, "failed to run")
+		log.Error("failed to run", slog.String("err", err.Error()))
 		os.Exit(1)
 	}
 }

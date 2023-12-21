@@ -3,24 +3,24 @@ package checker
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"strings"
 
-	"github.com/go-logr/logr"
 	"github.com/thepwagner/github-token-factory-oidc/api"
 	"github.com/thepwagner/github-token-factory-oidc/github"
 	"golang.org/x/sync/errgroup"
 )
 
 type RepoRego struct {
-	log       logr.Logger
+	log       *slog.Logger
 	github    *github.Clients
 	ownerRepo string
 	everyRepo bool
 }
 
-func NewRepoRego(log logr.Logger, github *github.Clients, ownerRepo string, everyRepo bool) *RepoRego {
+func NewRepoRego(log *slog.Logger, github *github.Clients, ownerRepo string, everyRepo bool) *RepoRego {
 	return &RepoRego{
-		log:       log.WithName("auth.RepoRego"),
+		log:       log.With("logger", "auth.RepoRego"),
 		github:    github,
 		ownerRepo: ownerRepo,
 		everyRepo: everyRepo,

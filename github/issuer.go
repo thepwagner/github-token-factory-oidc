@@ -3,9 +3,9 @@ package github
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"strings"
 
-	"github.com/go-logr/logr"
 	"github.com/google/go-github/v57/github"
 	"github.com/thepwagner/github-token-factory-oidc/api"
 	"go.opentelemetry.io/otel/attribute"
@@ -14,15 +14,15 @@ import (
 )
 
 type Issuer struct {
-	log    logr.Logger
+	log    *slog.Logger
 	tracer trace.Tracer
 
 	clients *Clients
 }
 
-func NewIssuer(log logr.Logger, tracer trace.Tracer, clients *Clients) *Issuer {
+func NewIssuer(log *slog.Logger, tracer trace.Tracer, clients *Clients) *Issuer {
 	return &Issuer{
-		log:     log.WithName("github.Issuer"),
+		log:     log.With("logger", "github.Issuer"),
 		tracer:  tracer,
 		clients: clients,
 	}
