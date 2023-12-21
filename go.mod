@@ -8,7 +8,7 @@ require (
 	github.com/go-logr/logr v1.3.0
 	github.com/go-logr/zerologr v1.2.3
 	github.com/google/go-github/v57 v57.0.0
-	github.com/open-policy-agent/opa v0.59.0
+	github.com/open-policy-agent/opa v0.60.0
 	github.com/rs/zerolog v1.31.0
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.8.4
@@ -35,7 +35,7 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-github/v56 v56.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/google/uuid v1.4.0 // indirect
+	github.com/google/uuid v1.5.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
