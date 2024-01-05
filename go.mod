@@ -3,7 +3,7 @@ module github.com/thepwagner/github-token-factory-oidc
 go 1.21
 
 require (
-	github.com/bradleyfalzon/ghinstallation/v2 v2.8.0
+	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
 	github.com/coreos/go-oidc/v3 v3.9.0
 	github.com/google/go-github/v57 v57.0.0
 	github.com/lmittmann/tint v1.0.3
