@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
 	github.com/coreos/go-oidc/v3 v3.9.0
-	github.com/google/go-github/v57 v57.0.0
+	github.com/google/go-github/v58 v58.0.0
 	github.com/lmittmann/tint v1.0.3
 	github.com/open-policy-agent/opa v0.60.0
 	github.com/spf13/viper v1.18.2
@@ -32,7 +32,7 @@ require (
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/go-github/v56 v56.0.0 // indirect
+	github.com/google/go-github/v57 v57.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
