@@ -6,6 +6,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
 	github.com/coreos/go-oidc/v3 v3.9.0
 	github.com/google/go-github/v58 v58.0.0
+	github.com/google/go-github/v59 v59.0.0
 	github.com/lmittmann/tint v1.0.4
 	github.com/open-policy-agent/opa v0.61.0
 	github.com/spf13/viper v1.18.2
