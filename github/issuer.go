@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/google/go-github/v59/github"
+	"github.com/google/go-github/v60/github"
 	"github.com/thepwagner/github-token-factory-oidc/api"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
