@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-oidc/v3 v3.9.0
 	github.com/google/go-github/v60 v60.0.0
 	github.com/lmittmann/tint v1.0.4
-	github.com/open-policy-agent/opa v0.62.0
+	github.com/open-policy-agent/opa v0.62.1
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0
@@ -64,7 +64,7 @@ require (
 	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/oauth2 v0.16.0 // indirect
-	golang.org/x/sys v0.17.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect
