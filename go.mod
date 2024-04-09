@@ -10,7 +10,7 @@ require (
 	github.com/open-policy-agent/opa v0.63.0
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
-	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.50.0
 	go.opentelemetry.io/otel v1.25.0
 	go.opentelemetry.io/otel/sdk v1.25.0
 	go.opentelemetry.io/otel/trace v1.25.0
