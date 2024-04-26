@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-oidc/v3 v3.10.0
 	github.com/google/go-github/v61 v61.0.0
 	github.com/lmittmann/tint v1.0.4
-	github.com/open-policy-agent/opa v0.64.0
+	github.com/open-policy-agent/opa v0.64.1
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.51.0
