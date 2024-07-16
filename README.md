@@ -1,5 +1,13 @@
 # GitHub Token Factory OIDC
 
+## Deprecated
+
+I got tired of maintaining this, you should use https://github.com/octo-sts/app .
+
+I _still_ have to use PATs, because GitHub Apps can't request organization-level package permissions.
+
+## Old README
+
 This is a server that issues short-lived GitHub installation tokens in response to clients authenticated by OpenID Connect identity tokens:
 
 - GitHub Actions can use this to authenticate to access multiple private repositories, or to use organization-level resources like adding issues to project boards.
@@ -10,13 +18,13 @@ Should you store a Personal Access Token as a CI Secret? No, try GTFO.
 
 Best used with [thepwagner/token-action](https://github.com/thepwagner/token-action)!
 
-## Limitations
+### Limitations
 
 * Issued tokens are valid for 1 hour, and can not be shorter or longer. This is a GitHub limitation.
 * A single issued token may not have permissions to multiple GitHub users/organizations. This is a GitHub limitation.
 * The server may issue tokens to multiple users/organizations using a public GitHub App with multiple installations, or multiple private GitHub Apps.
 
-## Setup
+### Setup
 
 Users must [create a GitHub app](https://docs.github.com/en/developers/apps/building-github-apps/creating-a-github-app).
 Select any permissions you'd like to be able to grant, be sure to include the minimum permissions:
@@ -26,13 +34,13 @@ Select any permissions you'd like to be able to grant, be sure to include the mi
 If you intend to support multiple users/organizations from a single app, GitHub requires that apps installed to multiple users/organizations are public.
 Unless you are really good at writing policies, you should probably not do this - set up a private app for each user/organization.
 
-## Security Model
+### Security Model
 
 The server holds secrets for all configured GitHub applications. It is what issues GitHub tokens to clients, so owning the server means owning the organizations/users its apps are installed to. Don't let that happen.
 
 Since deciding if a token should be issued can be expensive, the server defines a global list of valid OIDC issuers. Tokens presented by other issuers are rejected.
 
-### Policy Files
+#### Policy Files
 
 All request for tokens are denied by default. Permissions must be granted by the target repository. Repositories can add a [Rego policy file](https://www.openpolicyagent.org/docs/latest/policy-language/) that grants permissions at `.github/tokens.rego`:
 
